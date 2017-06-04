@@ -9,7 +9,7 @@ var router = express.Router();
 
 //Defining Parameters 
 var m2t = {
-    "/": " ", 
+    "/": " ",
     ".-": "A",
     "-...": "B",
     "-.-.": "C",
@@ -45,11 +45,20 @@ var m2t = {
     "-....": "6",
     "--...": "7",
     "---..": "8",
-    "----.": "9"
+    "----.": "9",
+    ".-.-.-": ".",
+    "--..--": ",",
+    "..--..": "?",
+    "-.-.--": "!",
+    "-....-": "-",
+    "-..-.": "/",
+    ".--.-.": "@",
+    "-.--.": "(",
+    "-.--.-": ")"
 };
 var t2m = {};
 //Reversing List
-Object.keys(m2t).forEach(function(key){
+Object.keys(m2t).forEach(function (key) {
     t2m[m2t[key]] = key;
 });
 
@@ -65,10 +74,10 @@ app.get('/', function (req, res) {
 });
 
 //Sockets
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('A user Connected!');
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('A user Dissconnected')
     });
 });
@@ -78,25 +87,26 @@ router.post('/t2m', function (req, res) {
     var data = req.body.text.toUpperCase();
     console.log("[+]Input:" + data);
     output = "";
-    for(i=0;i<data.length;i++){
-    var b = (Object.values(t2m[data.charAt(i)])).join("");
-    output = output + " "+ b;
-}
-console.log(output);
+    for (i = 0; i < data.length; i++) {
+        var b = (Object.values(t2m[data.charAt(i)])).join("");
+        output = output + " " + b;
+    }
+    console.log(output);
 });
 
 
 //Convert M2T
-router.post('/m2t',function(req,res){
+router.post('/m2t', function (req, res) {
     var morse = req.body.morse;
     var a1 = morse.split(" ");
-var output1 = "";
-for(i=0;i<a1.length;i++){
-    var b1 = Object.values(m2t[a1[i]]).join("");
-    output1 = output1 + ""+ b1;
-}
-console.log(output1);
+    var output1 = "";
+    for (i = 0; i < a1.length; i++) {
+        var b1 = Object.values(m2t[a1[i]]).join("");
+        output1 = output1 + "" + b1;
+    }
+    console.log(output1);
 })
+
 
 
 
