@@ -1,8 +1,10 @@
 var express = require('express')
+var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-var app = express();
 var router = express.Router();
 
 //Defining Parameters 
@@ -50,29 +52,51 @@ var t2m = {};
 Object.keys(m2t).forEach(function(key){
     t2m[m2t[key]] = key;
 });
-// console.log(Object.values(t2m["A"]));
-var input = "Chetan".toUpperCase();
+
+var input = "hello world".toUpperCase();
 var output = "";
 //Defining Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 //Index Page
-router.get('/', function (req, res) {
+app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
 
-//On click of convert
-// router.post('/go', function (req, res) {
-//     var data = req.body.head;
-//     console.log("[+]Input:" + data);    
-// });
+//Sockets
+io.on('connection', function(socket){
+    console.log('A user Connected!');
 
-for(i=0;i<input.length;i++){
-    console.log(input.charAt(i));
-    console.log(Object.values(t2m[input.charAt(i)]));
+    socket.on('disconnect', function(){
+        console.log('A user Dissconnected')
+    });
+});
+
+//On click of convert T2M
+router.post('/t2m', function (req, res) {
+    var data = req.body.text.toUpperCase();
+    console.log("[+]Input:" + data);
+    output = "";
+    for(i=0;i<data.length;i++){
+    var b = (Object.values(t2m[data.charAt(i)])).join("");
+    output = output + " "+ b;
 }
+console.log(output);
+});
 
 
+//Convert M2T
+router.post('/m2t',function(req,res){
+    var morse = req.body.morse;
+    var a1 = morse.split(" ");
+var output1 = "";
+for(i=0;i<a1.length;i++){
+    var b1 = Object.values(m2t[a1[i]]).join("");
+    output1 = output1 + ""+ b1;
+}
+console.log(output1);
+})
 
 
 

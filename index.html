@@ -1,11 +1,21 @@
+
+<!DOCTYPE html>
 <html>
 <title> Home </title>
-<form action="/go" method="POST">
+<h1 align="center"> Chill you are Morsed!</h1>
+<form action="/t2m" method="POST">
     <fieldset>
-        <h1 align="center"> Enter text</h1>
-        <lable for="head"></lable>
-        <input type="text" name="head" placeholder="Enter Text" /><br>
-        <input type="submit" value="Convert" />
+        <lable for="text"></lable>
+        <input type="text" name="text" placeholder="Text" /><br>
+        <input type="submit" value="Encrypt" />
     </fieldset>
 </form>
+<form action="/m2t" method="POST">
+    <fieldset>
+        <lable for="morse"></lable>
+        <input type="text" name="morse" placeholder="Morse" /><br>
+        <input type="submit" value="Decrypt" />
+    </fieldset>
+</form>
+
 </html>
